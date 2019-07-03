@@ -1,0 +1,28 @@
+.app-view {
+    height: -webkit-fill-available;
+    /* border: 1px solid #000; */
+}
+.nav-data {
+    padding: 20px;
+}
+.nav-link {
+    padding: 0 15px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 14px;
+    /* cursor: pointer; */
+}
+.nav-link:hover {
+    cursor: pointer;
+    color: lightseagreen;
+    font-style: bold;
+}
+.nav-header {
+    /* background: #ccc; */
+    border-bottom: 1px solid #ccc;
+    padding: 10px 10px;
+    margin-bottom: 0%
+}
+.active {
+    color: lightseagreen;
+    font-size: 18px;
+}
