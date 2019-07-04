@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select, createSelector, State } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { ProductService } from './product.service';
+import { Product } from './product';
 
 @Component({
   selector: 'app-product-list',
@@ -10,39 +12,35 @@ import { Observable } from 'rxjs';
 export class ProductListComponent implements OnInit {
 
   items = [];
-  showDetails = false;
-  store$;
-  constructor(private store: Store<any>) {
-    this.store$ = store.select('products');
-  }
+  showDetails: boolean;
+  errorMessage: string;
+  products: Product[];
+  selectedProduct: Product | null;
+  sub: Subscription;
+
+  constructor(private store: Store<any>, private productService: ProductService) { }
 
   ngOnInit(): void {
-    this.items = [
-      { name: 'HCL Tech', place: 'Noida' },
-      { name: 'TCS', place: 'Mumbai' },
-      { name: 'Wipro', place: 'Noida' },
-      { name: 'Infosys', place: 'Chennai' },
-      { name: 'HP', place: 'Gurgaon' }
-    ];
+    this.sub = this.productService.selectedProductChanges$.subscribe(
+      selectedProduct => this.selectedProduct = selectedProduct
+    );
 
-    // ToDO: Unsubscribe
-    // this.store.pipe(select('products')).subscribe(
-    //   (products) => {
-    //     console.log('1Store select subscription: ', products);
-    //     if (products) {
-    //       console.log('Store select subscription: ', products);
-    //       this.showDetails = products.showProductCode;
-    //     }
-    //   }
-    // );
+    this.productService.getProducts().subscribe(
+      (products: Product[]) => this.products = products,
+      (err: any) => this.errorMessage = err.error
+    );
 
-    // this.store.select('products');
-
+    // TODO: Unsubscribe
+    this.store.pipe(select('products')).subscribe(
+      products => {
+        if (products) {
+          this.showDetails = products.showProductCode;
+        }
+      });
   }
   showDetailInfo(e) {
     // this.showDetails = e.target.checked;
     const setShowDetailToggle = e.target.checked;
-    console.log('check box clicked: ', this.store);
     this.store.dispatch({
       type: 'TOGGLE_PRODUCT_CODE',
       payload: setShowDetailToggle

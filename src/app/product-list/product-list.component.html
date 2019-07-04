@@ -1,11 +1,11 @@
 <div class="product-style">
   <div class="item-style list-header">Products</div>
-  <div class="item-style" *ngFor="let item of items">
-    {{item.name}}
-    <ng-container *ngIf="showDetails">({{item.place}})</ng-container>
+  <div class="item-style" *ngFor="let item of products">
+    {{item.productName}}
+    <ng-container *ngIf="showDetails">({{item.productCode}})</ng-container>
   </div>
   <div class="item-style list-header">
-    <input #show_detail type="checkbox" value="showDetails" [checked]="showDetails" (click)="showDetailInfo($event)">
+    <input type="checkbox" value="showDetails" [checked]="showDetails" (click)="showDetailInfo($event)">
     Show Details
   </div>
 </div>
